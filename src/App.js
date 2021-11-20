@@ -1,24 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import { ListKontak, FormKontak } from "./components";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      Hello world!!!!
-      </header>
+    <div className="p-16 divide-y">
+      <div className="p-8 text-center text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+        Kontak App
+      </div>
+        <FormKontak />
+        <hr />
+      <ListKontak />
     </div>
   );
 }

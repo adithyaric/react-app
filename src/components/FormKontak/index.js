@@ -1,0 +1,87 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getKontakList,
+  addKontak,
+  editKontak,
+} from "../../actions/kontakAction";
+
+function FormKontak() {
+  const [nama, setNama] = useState("");
+  const [nohp, setNohp] = useState("");
+  const [id, setId] = useState("");
+  const { addKontakResult, detailKontakResult, updateKontakResult } =
+    useSelector((state) => state.kontakReducer);
+  const dispatch = useDispatch();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Masuk Handle Submit");
+    if (id) {
+      // update
+      dispatch(editKontak({ nama: nama, nohp: nohp, id: id }));
+    } else {
+      dispatch(addKontak({ nama: nama, nohp: nohp }));
+    }
+  };
+  // Add contact
+  useEffect(() => {
+    if (addKontakResult) {
+      console.log("+++ Component Did Mount addKontakResult");
+      setNama("");
+      setNohp("");
+      setId("");
+      dispatch(getKontakList());
+    }
+  }, [addKontakResult, dispatch]);
+  //Update contact
+  useEffect(() => {
+    if (updateKontakResult) {
+      console.log("~~~ Component Did Mount editKontakResult");
+      dispatch(getKontakList());
+      setNama("");
+      setNohp("");
+      setId("");
+    }
+  }, [updateKontakResult, dispatch]);
+  //Detail contact
+  useEffect(() => {
+    if (detailKontakResult) {
+      console.log("Masuk Form Kontak - Detail");
+      setNama(detailKontakResult.nama);
+      setNohp(detailKontakResult.nohp);
+      setId(detailKontakResult.id);
+    }
+  }, [detailKontakResult, dispatch]);
+  return (
+    <div>
+      <div className="font-bold text-gray-400">Form kontak</div>
+      <div className="font-bold">{id ? "Edit Kontak" : "Add kontak"}</div>
+      <form onSubmit={(event) => handleSubmit(event)}>
+        <input
+          type="text"
+          name="nama"
+          id=""
+          placeholder="Nama..."
+          value={nama}
+          onChange={(event) => setNama(event.target.value)}
+        />
+        <input
+          type="text"
+          name="nohp"
+          id=""
+          placeholder="No HP..."
+          value={nohp}
+          onChange={(event) => setNohp(event.target.value)}
+        />
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+          type="submit"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default FormKontak;
